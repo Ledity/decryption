@@ -1,41 +1,13 @@
-// #include "head_bank.h"
-
-struct client
-{
-        long long int identification_number;
-
-        int account;
-        int amount;
-        int code;
-};
-
-struct key
-{
-        int ind_num;
-
-        int key_1;
-        int key_2;
-        int key_3;
-};
-
-struct balance{
-        int currency_start[5];
-        int currency_cipher[5];
-};
-
+#include "head_bank.h"
 
 //--------------------decryption---------------------
 
 void decryption (int N,
-                 struct client *bank_cipher_pointer,
-                 struct client *bank_new_pointer,
-                 struct key *cipher_pounter,
+                 struct client *bank_cipher,
+                 struct client *bank_new,
+                 struct key *cipher,
                  struct balance *total_balance)
 {
-        struct client *bank_cipher;
-        struct client *bank_new;
-        struct key *cipher;
-
         for (int i = 0; i < N; i++)
         {
                 bank_new[i].account = bank_cipher[i].account - cipher[i].key_1;
@@ -43,5 +15,16 @@ void decryption (int N,
                 bank_new[i].code    = bank_cipher[i].code    - cipher[i].key_3;
         };
 
-        
+        for (int i = 0; i < 5; i++)
+        {
+                *total_balance -> currency_cipher[i] = 0;
+                
+                for (int j = 0; j < N; j++)
+                {
+                        if (client_new[j].code == i)
+                        {
+                                *total_balance -> currency_cipher[i] = *total_balance -> currency_cipher[i] + client_new[j].amount;
+                        }
+                }
+        }
 }
